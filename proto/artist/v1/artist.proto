@@ -1,0 +1,68 @@
+syntax = 'proto3';
+
+package proto.artist.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message Artist {
+  string id = 1;
+  string customer_name = 2;
+  string customer_email = 3;
+  string customer_phone = 4;
+  string customer_postcode = 5;
+  string customer_address = 6;
+  uint32 total_price = 7;
+  string artist_status = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+service ArtistService {
+  rpc GetArtist(GetArtistRequest) returns (GetArtistResponse) {}
+  rpc ListArtists(ListArtistsRequest) returns (ListArtistsResponse) {}
+  rpc CreateArtist(CreateArtistRequest) returns (CreateArtistResponse) {}
+  rpc UpdateArtist(UpdateArtistRequest) returns (UpdateArtistResponse) {}
+  rpc DeleteArtist(DeleteArtistRequest) returns (DeleteArtistResponse) {}
+}
+
+message GetArtistRequest {
+  string id = 1;
+}
+
+message GetArtistResponse {
+  Artist artist = 1;
+}
+
+message ListArtistsRequest {
+  int32 page_size = 1;
+  int32 page_token = 2;
+}
+
+message ListArtistsResponse {
+  repeated Artist artists = 1;
+  int32 count = 2;
+}
+
+message CreateArtistRequest {
+  Artist artist = 1;
+}
+
+message CreateArtistResponse {
+  string id = 1;
+}
+
+message UpdateArtistRequest {
+  Artist artist = 1;
+}
+
+message UpdateArtistResponse {
+  // empty
+}
+
+message DeleteArtistRequest {
+  string id = 1;
+}
+
+message DeleteArtistResponse {
+  // empty
+}

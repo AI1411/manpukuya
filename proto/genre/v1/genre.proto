@@ -1,0 +1,62 @@
+syntax = 'proto3';
+
+package proto.genre.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message Genre {
+  string id = 1;
+  string genre_name = 2;
+  google.protobuf.Timestamp created_at = 3;
+  google.protobuf.Timestamp updated_at = 4;
+}
+
+service GenreService {
+  rpc GetGenre(GetGenreRequest) returns (GetGenreResponse) {}
+  rpc ListGenres(ListGenresRequest) returns (ListGenresResponse) {}
+  rpc CreateGenre(CreateGenreRequest) returns (CreateGenreResponse) {}
+  rpc UpdateGenre(UpdateGenreRequest) returns (UpdateGenreResponse) {}
+  rpc DeleteGenre(DeleteGenreRequest) returns (DeleteGenreResponse) {}
+}
+
+message GetGenreRequest {
+  string id = 1;
+}
+
+message GetGenreResponse {
+  Genre genre = 1;
+}
+
+message ListGenresRequest {
+  int32 page_size = 1;
+  int32 page_token = 2;
+}
+
+message ListGenresResponse {
+  repeated Genre genres = 1;
+  int32 count = 2;
+}
+
+message CreateGenreRequest {
+  Genre genre = 1;
+}
+
+message CreateGenreResponse {
+  string id = 1;
+}
+
+message UpdateGenreRequest {
+  Genre genre = 1;
+}
+
+message UpdateGenreResponse {
+  // empty
+}
+
+message DeleteGenreRequest {
+  string id = 1;
+}
+
+message DeleteGenreResponse {
+  // empty
+}
