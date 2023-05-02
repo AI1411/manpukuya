@@ -1,0 +1,75 @@
+syntax = 'proto3';
+
+package proto.order_item.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message OrderItem {
+  string id = 1;
+  string order_id = 2;
+  string product_id = 3;
+  uint32 quantity = 4;
+  uint32 price = 5;
+  google.protobuf.Timestamp created_at = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+service OrderItemService {
+  rpc GetOrderItem(GetOrderItemRequest) returns (GetOrderItemResponse) {}
+  rpc ListOrderItems(ListOrderItemsRequest) returns (ListOrderItemsResponse) {}
+  rpc CreateOrderItem(CreateOrderItemRequest) returns (CreateOrderItemResponse) {}
+  rpc UpdateOrderItem(UpdateOrderItemRequest) returns (UpdateOrderItemResponse) {}
+  rpc DeleteOrderItem(DeleteOrderItemRequest) returns (DeleteOrderItemResponse) {}
+  rpc ChangeOrderItemStatus(ChangeOrderItemStatusRequest) returns (ChangeOrderItemStatusResponse) {}
+}
+
+message GetOrderItemRequest {
+  string id = 1;
+}
+
+message GetOrderItemResponse {
+  OrderItem order_item = 1;
+}
+
+message ListOrderItemsRequest {
+  int32 page_size = 1;
+  int32 page_token = 2;
+}
+
+message ListOrderItemsResponse {
+  repeated OrderItem order_items = 1;
+  int32 count = 2;
+}
+
+message CreateOrderItemRequest {
+  OrderItem order_item = 1;
+}
+
+message CreateOrderItemResponse {
+  string id = 1;
+}
+
+message UpdateOrderItemRequest {
+  OrderItem order_item = 1;
+}
+
+message UpdateOrderItemResponse {
+  // empty
+}
+
+message DeleteOrderItemRequest {
+  string id = 1;
+}
+
+message DeleteOrderItemResponse {
+  // empty
+}
+
+message ChangeOrderItemStatusRequest {
+  string id = 1;
+  string order_item_status = 2;
+}
+
+message ChangeOrderItemStatusResponse {
+  // empty
+}
