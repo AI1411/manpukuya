@@ -1,0 +1,78 @@
+syntax = 'proto3';
+
+package proto.user.v1;
+
+import "google/protobuf/timestamp.proto";
+
+message User {
+  string id = 1;
+  string customer_name = 2;
+  string customer_email = 3;
+  string customer_phone = 4;
+  string customer_postcode = 5;
+  string customer_address = 6;
+  uint32 total_price = 7;
+  string user_status = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+service UserService {
+  rpc GetUser(GetUserRequest) returns (GetUserResponse) {}
+  rpc ListUsers(ListUsersRequest) returns (ListUsersResponse) {}
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+  rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse) {}
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse) {}
+  rpc ChangeUserStatus(ChangeUserStatusRequest) returns (ChangeUserStatusResponse) {}
+}
+
+message GetUserRequest {
+  string id = 1;
+}
+
+message GetUserResponse {
+  User user = 1;
+}
+
+message ListUsersRequest {
+  int32 page_size = 1;
+  int32 page_token = 2;
+}
+
+message ListUsersResponse {
+  repeated User users = 1;
+  int32 count = 2;
+}
+
+message CreateUserRequest {
+  User user = 1;
+}
+
+message CreateUserResponse {
+  string id = 1;
+}
+
+message UpdateUserRequest {
+  User user = 1;
+}
+
+message UpdateUserResponse {
+  // empty
+}
+
+message DeleteUserRequest {
+  string id = 1;
+}
+
+message DeleteUserResponse {
+  // empty
+}
+
+message ChangeUserStatusRequest {
+  string id = 1;
+  string user_status = 2;
+}
+
+message ChangeUserStatusResponse {
+  // empty
+}
