@@ -29,3 +29,18 @@ COMMENT ON COLUMN order_items.updated_at IS '更新日時';
 
 CREATE INDEX IF NOT EXISTS order_items_id_idx ON order_items (id);
 CREATE INDEX IF NOT EXISTS order_items_created_at_idx ON order_items (created_at);
+
+DO
+$$
+    BEGIN
+        IF NOT EXISTS (SELECT 1
+                       FROM information_schema.table_constraints
+                       WHERE constraint_type = 'FOREIGN KEY'
+                         AND table_name = 'order_items'
+                         AND constraint_name = 'orders_order_items_id_fkey') THEN
+            ALTER TABLE order_items
+                ADD CONSTRAINT orders_order_items_id_fkey
+                    FOREIGN KEY (order_id) REFERENCES orders (id);
+        END IF;
+    END
+$$;

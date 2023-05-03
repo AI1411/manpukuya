@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users
     username   VARCHAR(100)             NOT NULL,
     email      VARCHAR(100)             NOT NULL UNIQUE,
     "password" TEXT                     NOT NULL,
-    status     user_status              NOT NULL DEFAULT '通常会員',
+    status     user_status              NOT NULL DEFAULT 'NORMAL',
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );

@@ -14,3 +14,20 @@ COMMENT ON COLUMN genres.updated_at IS '更新日時';
 
 CREATE INDEX IF NOT EXISTS genres_id_idx ON genres (id);
 CREATE INDEX IF NOT EXISTS genres_created_at_idx ON genres (created_at);
+
+DO
+$$
+    BEGIN
+        -- 外部キー制約が存在するかどうかを確認するクエリ
+        IF NOT EXISTS (SELECT 1
+                       FROM information_schema.table_constraints
+                       WHERE constraint_type = 'FOREIGN KEY'
+                         AND table_name = 'products'
+                         AND constraint_name = 'products_genre_id_fkey') THEN
+            -- 外部キー制約が存在しない場合にのみ追加する
+            ALTER TABLE products
+                ADD CONSTRAINT products_genre_id_fkey
+                    FOREIGN KEY (genre_id) REFERENCES genres (id);
+        END IF;
+    END
+$$;

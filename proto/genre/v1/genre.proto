@@ -28,8 +28,8 @@ message GetGenreResponse {
 }
 
 message ListGenresRequest {
-  int32 page_size = 1;
-  int32 page_token = 2;
+  int32 offset = 1;
+  int32 limit = 2;
 }
 
 message ListGenresResponse {

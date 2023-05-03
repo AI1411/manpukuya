@@ -103,7 +103,22 @@ COMMENT ON COLUMN order_items.created_at IS '作成日時';
 COMMENT ON COLUMN order_items.updated_at IS '更新日時';
 
 CREATE INDEX IF NOT EXISTS order_items_id_idx ON order_items (id);
-CREATE INDEX IF NOT EXISTS order_items_created_at_idx ON order_items (created_at);CREATE TABLE IF NOT EXISTS artists
+CREATE INDEX IF NOT EXISTS order_items_created_at_idx ON order_items (created_at);
+
+DO
+$$
+    BEGIN
+        IF NOT EXISTS (SELECT 1
+                       FROM information_schema.table_constraints
+                       WHERE constraint_type = 'FOREIGN KEY'
+                         AND table_name = 'order_items'
+                         AND constraint_name = 'orders_order_items_id_fkey') THEN
+            ALTER TABLE order_items
+                ADD CONSTRAINT orders_order_items_id_fkey
+                    FOREIGN KEY (order_id) REFERENCES orders (id);
+        END IF;
+    END
+$$;CREATE TABLE IF NOT EXISTS artists
 (
     id          UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
     artist_name VARCHAR(255) NOT NULL UNIQUE,
@@ -119,7 +134,22 @@ COMMENT ON COLUMN artists.updated_at IS '更新日時';
 
 CREATE INDEX IF NOT EXISTS artists_id_idx ON artists (id);
 CREATE INDEX IF NOT EXISTS artist_name_idx ON artists (artist_name);
-CREATE INDEX IF NOT EXISTS artists_created_at_idx ON artists (created_at);CREATE TABLE IF NOT EXISTS genres
+CREATE INDEX IF NOT EXISTS artists_created_at_idx ON artists (created_at);
+
+DO
+$$
+    BEGIN
+        IF NOT EXISTS (SELECT 1
+                       FROM information_schema.table_constraints
+                       WHERE constraint_type = 'FOREIGN KEY'
+                         AND table_name = 'products'
+                         AND constraint_name = 'products_artist_id_fkey') THEN
+            ALTER TABLE products
+                ADD CONSTRAINT products_artist_id_fkey
+                    FOREIGN KEY (artist_id) REFERENCES artists (id);
+        END IF;
+    END
+$$;CREATE TABLE IF NOT EXISTS genres
 (
     id         UUID PRIMARY KEY      DEFAULT gen_random_uuid(),
     genre_name VARCHAR(255) NOT NULL UNIQUE,
@@ -135,7 +165,23 @@ COMMENT ON COLUMN genres.updated_at IS '更新日時';
 
 CREATE INDEX IF NOT EXISTS genres_id_idx ON genres (id);
 CREATE INDEX IF NOT EXISTS genres_created_at_idx ON genres (created_at);
-DROP TYPE IF EXISTS user_status CASCADE;
+
+DO
+$$
+    BEGIN
+        -- 外部キー制約が存在するかどうかを確認するクエリ
+        IF NOT EXISTS (SELECT 1
+                       FROM information_schema.table_constraints
+                       WHERE constraint_type = 'FOREIGN KEY'
+                         AND table_name = 'products'
+                         AND constraint_name = 'products_genre_id_fkey') THEN
+            -- 外部キー制約が存在しない場合にのみ追加する
+            ALTER TABLE products
+                ADD CONSTRAINT products_genre_id_fkey
+                    FOREIGN KEY (genre_id) REFERENCES genres (id);
+        END IF;
+    END
+$$;DROP TYPE IF EXISTS user_status CASCADE;
 CREATE TYPE user_status AS ENUM (
     'NORMAL',
     'WITHDRAWAL',
@@ -149,7 +195,7 @@ CREATE TABLE IF NOT EXISTS users
     username   VARCHAR(100)             NOT NULL,
     email      VARCHAR(100)             NOT NULL UNIQUE,
     "password" TEXT                     NOT NULL,
-    status     user_status              NOT NULL DEFAULT '通常会員',
+    status     user_status              NOT NULL DEFAULT 'NORMAL',
     created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
@@ -182,3 +228,20 @@ COMMENT ON COLUMN product_images.updated_at IS '更新日時';
 
 CREATE INDEX IF NOT EXISTS product_images_id_idx ON product_images (id);
 CREATE INDEX IF NOT EXISTS product_images_created_at_idx ON product_images (created_at);
+
+DO
+$$
+    BEGIN
+        -- 外部キー制約が存在するかどうかを確認するクエリ
+        IF NOT EXISTS (SELECT 1
+                       FROM information_schema.table_constraints
+                       WHERE constraint_type = 'FOREIGN KEY'
+                         AND table_name = 'product_images'
+                         AND constraint_name = 'product_images_product_id_fkey') THEN
+            -- 外部キー制約が存在しない場合にのみ追加する
+            ALTER TABLE product_images
+                ADD CONSTRAINT product_images_product_id_fkey
+                    FOREIGN KEY (product_id) REFERENCES products (id);
+        END IF;
+    END
+$$;
