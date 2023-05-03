@@ -1,8 +1,8 @@
 syntax = 'proto3';
 
-import "google/protobuf/timestamp.proto";
+package product.v1;
 
-package proto.product.v1;
+import "google/protobuf/timestamp.proto";
 
 message Product {
   string id = 1;
@@ -11,8 +11,8 @@ message Product {
   string artist_id = 4;
   string genre_id = 5;
   string release_date = 6;
-  string stock = 7;
-  string price = 8;
+  uint32 stock = 7;
+  uint32 price = 8;
   google.protobuf.Timestamp created_at = 9;
   google.protobuf.Timestamp updated_at = 10;
 }
@@ -33,10 +33,7 @@ message GetProductResponse {
   Product product = 1;
 }
 
-message ListProductsRequest {
-  int32 page_size = 1;
-  int32 page_token = 2;
-}
+message ListProductsRequest {}
 
 message ListProductsResponse {
   repeated Product products = 1;
