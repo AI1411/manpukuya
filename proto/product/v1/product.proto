@@ -33,12 +33,13 @@ message GetProductResponse {
   Product product = 1;
 }
 
-message ListProductsRequest {}
+message ListProductsRequest {
+  uint32 offset = 1;
+  uint32 limit = 2;
+}
 
 message ListProductsResponse {
   repeated Product products = 1;
-  int32 offset = 2;
-  int32 limit = 3;
 }
 
 message CreateProductRequest {

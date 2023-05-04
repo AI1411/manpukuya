@@ -5,7 +5,8 @@ import (
 
 	"github.com/bufbuild/connect-go"
 
-	productv1 "github.com/AI1411/manpukuya/gen/proto/product/v1"
+	productv1 "github.com/AI1411/manpukuya/gen/product/v1"
+	productEntity "github.com/AI1411/manpukuya/internal/domain/entity"
 	"github.com/AI1411/manpukuya/internal/domain/repository"
 )
 
@@ -27,10 +28,20 @@ func (l listProductsUsecaseImpl) Exec(
 	ctx context.Context,
 	in *connect.Request[productv1.ListProductsRequest],
 ) (*connect.Response[productv1.ListProductsResponse], error) {
-	_, err := l.productRepository.ListProducts(ctx, nil)
+	lpc := productEntity.NewListProductsCondition(in.Msg.Offset, in.Msg.Limit)
+	lp, err := l.productRepository.ListProducts(ctx, lpc)
 	if err != nil {
 		return nil, err
 	}
 
-	return &connect.Response[productv1.ListProductsResponse]{}, nil
+	lpr := make([]*productv1.Product, len(lp))
+	for i, p := range lp {
+		lpr[i] = ToGRPC(p)
+	}
+
+	return &connect.Response[productv1.ListProductsResponse]{
+		Msg: &productv1.ListProductsResponse{
+			Products: lpr,
+		},
+	}, nil
 }

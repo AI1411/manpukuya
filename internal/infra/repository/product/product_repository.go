@@ -27,8 +27,13 @@ func (p productRepository) ListProducts(
 	ctx context.Context,
 	condition *productEntity.ListProductsCondition,
 ) (productEntity.ListProducts, error) {
-	//TODO implement me
-	panic("implement me")
+	var products productEntity.ListProducts
+	err := p.dbClient.Conn(ctx).Find(&products).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return products, nil
 }
 
 func (p productRepository) GetProduct(ctx context.Context, uuid uuid.UUID) (*productEntity.Product, error) {

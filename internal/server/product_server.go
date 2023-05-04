@@ -9,6 +9,7 @@ import (
 	productv1 "github.com/AI1411/manpukuya/gen/product/v1"
 	"github.com/AI1411/manpukuya/internal/domain/repository"
 	"github.com/AI1411/manpukuya/internal/infra/db"
+	"github.com/AI1411/manpukuya/internal/usecase/product"
 )
 
 type ProductServer struct {
@@ -41,12 +42,13 @@ func (s *ProductServer) ListProducts(
 	ctx context.Context,
 	in *connect.Request[productv1.ListProductsRequest],
 ) (*connect.Response[productv1.ListProductsResponse], error) {
-	_, err := s.categoryRepo.ListProducts(ctx, nil)
+	uc := usecase.NewListProductsUsecase(s.categoryRepo)
+	res, err := uc.Exec(ctx, in)
 	if err != nil {
 		s.zapLogger.Error(err.Error())
 		return nil, err
 	}
-	return &connect.Response[productv1.ListProductsResponse]{}, nil
+	return res, nil
 }
 
 func (s *ProductServer) CreateProduct(
