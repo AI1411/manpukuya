@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"log"
 
 	"github.com/bufbuild/connect-go"
 	"go.uber.org/zap"
@@ -48,6 +49,8 @@ func (s *ProductServer) ListProducts(
 		s.zapLogger.Error(err.Error())
 		return nil, err
 	}
+	context.WithValue(ctx, "response", res)
+	log.Printf("response: %v", ctx.Value("response"))
 	return res, nil
 }
 

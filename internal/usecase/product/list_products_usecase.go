@@ -28,7 +28,12 @@ func (l listProductsUsecaseImpl) Exec(
 	ctx context.Context,
 	in *connect.Request[productv1.ListProductsRequest],
 ) (*connect.Response[productv1.ListProductsResponse], error) {
-	lpc := productEntity.NewListProductsCondition(in.Msg.Offset, in.Msg.Limit)
+	lpc := productEntity.NewListProductsCondition(
+		in.Msg.ProductName,
+		in.Msg.Offset,
+		in.Msg.Limit,
+	)
+
 	lp, err := l.productRepository.ListProducts(ctx, lpc)
 	if err != nil {
 		return nil, err

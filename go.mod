@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/bufbuild/connect-go v1.7.0
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/kelseyhightower/envconfig v1.4.0
