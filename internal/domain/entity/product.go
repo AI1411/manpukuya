@@ -22,8 +22,9 @@ type Product struct {
 }
 
 type ListProductsCondition struct {
-	Offset uint32
-	Limit  uint32
+	ProductName string
+	Offset      uint32
+	Limit       uint32
 }
 
 func NewProduct(
@@ -47,12 +48,14 @@ func NewProduct(
 }
 
 func NewListProductsCondition(
+	productName string,
 	offset uint32,
 	limit uint32,
 ) *ListProductsCondition {
 	return &ListProductsCondition{
-		Offset: offset,
-		Limit:  limit,
+		ProductName: productName,
+		Offset:      offset,
+		Limit:       limit,
 	}
 }
 

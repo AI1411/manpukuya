@@ -9,6 +9,7 @@ import (
 	productEntity "github.com/AI1411/manpukuya/internal/domain/entity"
 	productRepo "github.com/AI1411/manpukuya/internal/domain/repository"
 	"github.com/AI1411/manpukuya/internal/infra/db"
+	"github.com/AI1411/manpukuya/internal/infra/repository"
 )
 
 type productRepository struct {
@@ -28,7 +29,11 @@ func (p productRepository) ListProducts(
 	condition *productEntity.ListProductsCondition,
 ) (productEntity.ListProducts, error) {
 	var products productEntity.ListProducts
-	err := p.dbClient.Conn(ctx).Find(&products).Error
+	query := p.dbClient.Conn(ctx)
+	query = repository.AddLimit(query, int32(condition.Limit))
+	query = repository.AddOffset(query, int32(condition.Offset))
+	query = repository.AddWhereLike(query, "product_name", condition.ProductName)
+	err := query.Find(&products).Error
 	if err != nil {
 		return nil, err
 	}
