@@ -23,9 +23,18 @@ func NewLoginUsecase(userRepository repository.UserRepository) LoginUsecase {
 	}
 }
 
-func (l *loginUsecase) Exec(
+func (u *loginUsecase) Exec(
 	ctx context.Context,
 	in *connect.Request[userv1.LoginRequest],
 ) (*connect.Response[userv1.LoginResponse], error) {
-	panic("implement me")
+	res, err := u.userRepository.Login(ctx, in.Msg.GetEmail(), in.Msg.GetPassword())
+	if err != nil {
+		return nil, err
+	}
+
+	return &connect.Response[userv1.LoginResponse]{
+		Msg: &userv1.LoginResponse{
+			Token: res,
+		},
+	}, nil
 }

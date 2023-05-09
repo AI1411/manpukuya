@@ -56,8 +56,14 @@ func (u *UserServer) ChangeUserStatus(ctx context.Context, in *connect.Request[u
 }
 
 func (u *UserServer) Login(ctx context.Context, in *connect.Request[userv1.LoginRequest]) (*connect.Response[userv1.LoginResponse], error) {
-	//TODO implement me
-	panic("implement me")
+	uc := user.NewLoginUsecase(u.userRepo)
+	res, err := uc.Exec(ctx, in)
+	if err != nil {
+		u.zapLogger.Error(err.Error())
+		return nil, err
+	}
+
+	return res, nil
 }
 
 func (u *UserServer) Register(ctx context.Context, in *connect.Request[userv1.RegisterRequest]) (*connect.Response[userv1.RegisterResponse], error) {

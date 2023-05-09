@@ -7,7 +7,7 @@ import (
 )
 
 type UserRepository interface {
-	Login(context.Context, *userEntity.User) (string, error)
+	Login(context.Context, string, string) (string, error)
 	Register(context.Context, *userEntity.User) (*userEntity.UserWithToken, error)
 	Logout(context.Context, string) error
 }
