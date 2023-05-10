@@ -7,8 +7,7 @@ import "google/protobuf/timestamp.proto";
 message Genre {
   string id = 1;
   string genre_name = 2;
-  google.protobuf.Timestamp created_at = 3;
-  google.protobuf.Timestamp updated_at = 4;
+  string slag = 3;
 }
 
 service GenreService {
@@ -28,13 +27,11 @@ message GetGenreResponse {
 }
 
 message ListGenresRequest {
-  int32 offset = 1;
-  int32 limit = 2;
+  // empty
 }
 
 message ListGenresResponse {
   repeated Genre genres = 1;
-  int32 count = 2;
 }
 
 message CreateGenreRequest {
