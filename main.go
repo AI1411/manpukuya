@@ -11,6 +11,7 @@ import (
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
+	"github.com/AI1411/manpukuya/gen/artist/v1/artistv1connect"
 	"github.com/AI1411/manpukuya/gen/genre/v1/genrev1connect"
 	"github.com/AI1411/manpukuya/gen/product/v1/productv1connect"
 	"github.com/AI1411/manpukuya/gen/user/v1/userv1connect"
@@ -18,6 +19,7 @@ import (
 	"github.com/AI1411/manpukuya/internal/infra/env"
 	interceptor2 "github.com/AI1411/manpukuya/internal/infra/interceptor"
 	"github.com/AI1411/manpukuya/internal/infra/logger"
+	"github.com/AI1411/manpukuya/internal/infra/repository/artist"
 	"github.com/AI1411/manpukuya/internal/infra/repository/genre"
 	"github.com/AI1411/manpukuya/internal/infra/repository/product"
 	"github.com/AI1411/manpukuya/internal/infra/repository/user"
@@ -40,6 +42,7 @@ func main() {
 	productRepo := product.NewProductRepository(dbClient, zapLogger)
 	userRepo := user.NewUserRepository(dbClient, zapLogger)
 	genreRepo := genre.NewGenreRepository(dbClient, zapLogger)
+	artistRepo := artist.NewArtistRepository(dbClient, zapLogger)
 
 	// interceptor
 	interceptor := connect.WithInterceptors(interceptor2.ZapLoggerInterceptor(zapLogger))
@@ -48,6 +51,7 @@ func main() {
 	productServer := server.NewProductServer(dbClient, zapLogger, productRepo)
 	userServer := server.NewUserServer(dbClient, zapLogger, userRepo)
 	genreServer := server.NewGenreServer(dbClient, zapLogger, genreRepo)
+	artistServer := server.NewArtistServer(dbClient, zapLogger, artistRepo)
 
 	// handler
 	mux := http.NewServeMux()
@@ -55,6 +59,7 @@ func main() {
 	mux.Handle(productv1connect.NewProductServiceHandler(productServer, interceptor))
 	mux.Handle(userv1connect.NewUserServiceHandler(userServer, interceptor))
 	mux.Handle(genrev1connect.NewGenreServiceHandler(genreServer, interceptor))
+	mux.Handle(artistv1connect.NewArtistServiceHandler(artistServer, interceptor))
 
 	fmt.Println("... Listening on", address)
 	http.ListenAndServe(

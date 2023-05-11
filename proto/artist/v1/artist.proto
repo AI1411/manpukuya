@@ -6,15 +6,8 @@ import "google/protobuf/timestamp.proto";
 
 message Artist {
   string id = 1;
-  string customer_name = 2;
-  string customer_email = 3;
-  string customer_phone = 4;
-  string customer_postcode = 5;
-  string customer_address = 6;
-  uint32 total_price = 7;
-  string artist_status = 8;
-  google.protobuf.Timestamp created_at = 9;
-  google.protobuf.Timestamp updated_at = 10;
+  string artist_name = 2;
+  string slag = 3;
 }
 
 service ArtistService {
@@ -34,8 +27,9 @@ message GetArtistResponse {
 }
 
 message ListArtistsRequest {
-  int32 offset = 1;
-  int32 limit = 2;
+  string artist_name = 1;
+  int32 offset = 2;
+  int32 limit = 3;
 }
 
 message ListArtistsResponse {

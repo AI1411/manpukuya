@@ -14,9 +14,9 @@ import (
 )
 
 type ProductServer struct {
-	dbClient     db.Client
-	zapLogger    *zap.Logger
-	categoryRepo repository.ProductRepository
+	dbClient    db.Client
+	zapLogger   *zap.Logger
+	productRepo repository.ProductRepository
 }
 
 func NewProductServer(
@@ -25,9 +25,9 @@ func NewProductServer(
 	categoryRepo repository.ProductRepository,
 ) *ProductServer {
 	return &ProductServer{
-		dbClient:     dbClient,
-		zapLogger:    zapLogger,
-		categoryRepo: categoryRepo,
+		dbClient:    dbClient,
+		zapLogger:   zapLogger,
+		productRepo: categoryRepo,
 	}
 }
 
@@ -43,7 +43,7 @@ func (s *ProductServer) ListProducts(
 	ctx context.Context,
 	in *connect.Request[productv1.ListProductsRequest],
 ) (*connect.Response[productv1.ListProductsResponse], error) {
-	uc := usecase.NewListProductsUsecase(s.categoryRepo)
+	uc := usecase.NewListProductsUsecase(s.productRepo)
 	res, err := uc.Exec(ctx, in)
 	if err != nil {
 		s.zapLogger.Error(err.Error())
