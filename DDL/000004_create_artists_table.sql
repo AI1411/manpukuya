@@ -22,7 +22,7 @@ $$
                          AND constraint_name = 'products_artist_id_fkey') THEN
             ALTER TABLE products
                 ADD CONSTRAINT products_artist_id_fkey
-                    FOREIGN KEY (artist_id) REFERENCES artists (id);
+                    FOREIGN KEY (artist_id) REFERENCES artists (id) ON DELETE CASCADE;
         END IF;
     END
 $$;

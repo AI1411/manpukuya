@@ -24,7 +24,7 @@ $$
             -- 外部キー制約が存在しない場合にのみ追加する
             ALTER TABLE products
                 ADD CONSTRAINT products_genre_id_fkey
-                    FOREIGN KEY (genre_id) REFERENCES genres (id);
+                    FOREIGN KEY (genre_id) REFERENCES genres (id) ON DELETE CASCADE;
         END IF;
     END
 $$;

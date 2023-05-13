@@ -9,7 +9,7 @@ import (
 type ListProducts []*Product
 
 type Product struct {
-	ID          uuid.UUID
+	ID          uuid.UUID `gorm:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	ProductName string
 	Description string
 	ArtistID    uuid.UUID
