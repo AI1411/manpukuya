@@ -33,7 +33,7 @@ func (p productRepository) ListProducts(
 	query = repository.AddLimit(query, int32(condition.Limit))
 	query = repository.AddOffset(query, int32(condition.Offset))
 	query = repository.AddWhereLike(query, "product_name", condition.ProductName)
-	err := query.Find(&products).Error
+	err := query.Preload("Artist").Preload("Genre").Find(&products).Error
 	if err != nil {
 		return nil, err
 	}

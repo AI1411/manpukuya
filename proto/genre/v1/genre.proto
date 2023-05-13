@@ -4,6 +4,8 @@ package proto.genre.v1;
 
 import "google/protobuf/timestamp.proto";
 
+option go_package = "/proto";
+
 message Genre {
   string id = 1;
   string genre_name = 2;

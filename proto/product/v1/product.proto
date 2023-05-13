@@ -3,13 +3,17 @@ syntax = 'proto3';
 package proto.product.v1;
 
 import "google/protobuf/timestamp.proto";
+import "artist/v1/artist.proto";
+import "genre/v1/genre.proto";
+
+option go_package = "/proto";
 
 message Product {
   string id = 1;
   string product_name = 2;
   string description = 3;
-  string artist_id = 4;
-  string genre_id = 5;
+  proto.artist.v1.Artist artist = 4;
+  proto.genre.v1.Genre genre = 5;
   string release_date = 6;
   uint32 stock = 7;
   uint32 price = 8;

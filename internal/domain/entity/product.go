@@ -12,6 +12,8 @@ type Product struct {
 	ID          uuid.UUID `gorm:"type:uuid;primary_key;default:uuid_generate_v4()"`
 	ProductName string
 	Description string
+	Artist      Artist `gorm:"foreignkey:ArtistID;->"`
+	Genre       Genre  `gorm:"foreignkey:GenreID;->"`
 	ArtistID    uuid.UUID
 	GenreID     uuid.UUID
 	ReleaseDate time.Time

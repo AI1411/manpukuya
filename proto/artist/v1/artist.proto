@@ -4,6 +4,8 @@ package proto.artist.v1;
 
 import "google/protobuf/timestamp.proto";
 
+option go_package = "/proto";
+
 message Artist {
   string id = 1;
   string artist_name = 2;
